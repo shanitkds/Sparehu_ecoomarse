@@ -1,0 +1,22 @@
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Display Django messages on page load -->
+{% if messages %}
+<script>
+  // Wait for DOM and toast.js to be ready
+  document.addEventListener('DOMContentLoaded', function() {
+    // Small delay to ensure everything is loaded
+    setTimeout(function() {
+      {% for message in messages %}
+        if (typeof window.showToast === 'function') {
+          window.showToast(
+            "{{ message|escapejs }}",
+"{% if message.tags == 'success' %}success {% elif message.tags == 'error' %}error {% elif message.tags == 'warning' %}warning {% elif message.tags == 'info' %}info {% else %}info {% endif %}"
+          );
+        }
+      {% endfor %}
+    }, 100);
+  });
+</script>
+{% endif %}

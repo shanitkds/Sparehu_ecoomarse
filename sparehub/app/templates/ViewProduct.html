@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+<div class="min-h-screen bg-[#080808] text-gray-200 py-10 px-4">
+
+    <div class="max-w-6xl mx-auto text-center mb-12 pt-20">
+        <h2 class="text-xs uppercase tracking-[0.5em] text-red-600 font-bold mb-2">
+            Curated Selection
+        </h2>
+    </div>
+
+    <!-- GRID LEFT ALIGNED -->
+    <div class=" mr-auto grid grid-cols-2 md:grid-col-4 lg:grid-cols-6 gap-6">
+        {% for i in products %}
+        <div class="group bg-[#121212] rounded-2xl overflow-hidden
+            border border-white/[0.05]
+            transition-all duration-300
+            hover:border-red-500/30 hover:shadow-2xl">
+
+            <!-- IMAGE -->
+            <a href="{% url 'uniq_detaild' i.id %}"
+                class="block relative h-40 sm:h-44 md:h-52 overflow-hidden bg-[#1a1a1a]">
+
+                {% if i.image %}
+                <img src="{{ i.image.url }}" class="w-full h-full object-cover
+                        transition-transform duration-500
+                        group-hover:scale-105" alt="{{ i.name }}">
+                {% else %}
+                <div class="flex items-center justify-center h-full
+                        text-[10px] uppercase tracking-widest
+                        text-gray-600">
+                    No Image
+                </div>
+                {% endif %}
+            </a>
+
+            <!-- CONTENT -->
+            <div class="p-3 sm:p-4 md:p-5">
+
+                <!-- BRAND + MODEL -->
+                <div class="flex justify-between items-start mb-1">
+                    <span class="text-[9px] sm:text-[10px] font-bold uppercase
+                         tracking-wider text-red-500">
+                        {{ i.brand }}
+                    </span>
+                    <span class="text-[9px] sm:text-[10px] text-gray-500 font-mono">
+                        {{ i.model }}
+                    </span>
+                </div>
+
+                <!-- NAME + PRICE -->
+                <div class="mb-3 sm:mb-4">
+                    <h3 class="text-sm sm:text-base md:text-lg
+                       font-semibold text-white
+                       leading-tight truncate">
+                        {{ i.name }}
+                    </h3>
+                    <div class="text-base sm:text-lg md:text-xl
+                        font-light text-white mt-1">
+                        ₹{{ i.price }}
+                    </div>
+                </div>
+
+                <!-- FORM -->
+                <form action="{% url 'handil_action' i.id %}" method="post" class="space-y-2 sm:space-y-3">
+                    {% csrf_token %}
+
+                    <!-- QTY -->
+                    <div class="flex items-center justify-between
+                        bg-black/30 rounded-lg
+                        border border-white/10 p-1">
+                        <span class="text-[9px] sm:text-[10px] uppercase text-gray-500
+                             pl-2 font-bold">
+                            Qty
+                        </span>
+                        <input type="number" name="quantity" min="1" value="1" class="w-10 sm:w-12 bg-transparent text-center
+                              text-xs sm:text-sm font-bold text-white
+                              focus:outline-none">
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="submit" name="action" value="cart" class="py-1.5 sm:py-2
+                               text-[8px] sm:text-[9px]
+                               font-black uppercase tracking-tight
+                               border border-white/10
+                               rounded-lg hover:bg-white
+                               hover:text-black transition-all">
+                            + Cart
+                        </button>
+
+                        <button type="submit" name="action" value="order" class="py-1.5 sm:py-2
+                               text-[8px] sm:text-[9px]
+                               font-black uppercase tracking-tight
+                               bg-red-600 text-white
+                               rounded-lg hover:bg-red-500 transition-all">
+                            Buy Now
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+
+    
+</div>
+
+{% endblock content %}

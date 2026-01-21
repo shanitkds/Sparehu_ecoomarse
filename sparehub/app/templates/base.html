@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+
+</head>
+
+<body class="bg-black text-white">
+
+    <nav class="fixed top-0 left-0 w-full h-24 z-50
+                bg-gradient-to-br from-[#4A0404]/70 to-[#0B0B0B]/70
+                backdrop-blur-md border-b border-white/20
+                flex items-center justify-between px-10">
+
+        <a href="/">
+            <img src="{% static 'images/logo.png' %}" class="w-24 " alt="Logo">
+        </a>
+
+        <div class="flex items-center text-3xl">
+
+            <div class="sm:hidden" onclick="toggle()">
+                <i class="fa-solid fa-bars cursor-pointer"></i>
+            </div>
+
+            <div class="hidden sm:flex items-center gap-10 ml-6">
+
+                <a href="{% url 'Profile' %}" class="hover:text-red-500 transition">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+                <a href="{% url 'view_cart' %}" class="hover:text-red-500 transition">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="hover:text-red-500 transition">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="hover:text-red-500 transition">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                {% endif %}
+
+            </div>
+        </div>
+        
+        <div id="menuBar"
+            class="hidden sm:hidden absolute right-0 top-20 w-52 flex flex-col gap-4 text-lg z-55 bg-[#0b0b0b] border border-white/10 rounded-xl p-5">
+            <a href="{% url 'Profile' %}" class="hover:text-red-500 transition flex items-center gap-3">
+                <i class="fa-solid fa-user"></i> Profile
+            </a>
+
+            <a href="{% url 'view_cart' %}" class="hover:text-red-500 transition flex items-center gap-3">
+                <i class="fa-solid fa-cart-shopping"></i> Cart
+            </a>
+            <a href="{% url 'myorder' %}" class="hover:text-red-500 transition flex items-center gap-3">
+                <i class="fa-solid fa-box"></i>My Ordars
+            </a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="hover:text-red-500 transition flex items-center gap-3">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="hover:text-red-500 transition flex items-center gap-3">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+            {% endif %}
+        </div>
+
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer class="bg-gradient-to-br from-[#0B0B0B] via-black to-[#4A0404]
+               border-t border-white/10 text-gray-300 max-sm:hidden">
+
+  <div class="max-w-7xl mx-auto px-6 py-14
+              grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+    <!-- LOGO SECTION -->
+    <div>
+      <img src="{% static 'images/logo.png' %}" alt="SpareMart Logo"
+           class="w-36 mb-4">
+      <p class="text-sm text-gray-400 leading-relaxed">
+        SpareMart is your trusted destination for high-quality spare parts.
+        Reliable products, fast delivery, and best prices.
+      </p>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div>
+      <h3 class="text-white font-semibold mb-4 tracking-wide">
+        Quick Links
+      </h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/" class="hover:text-red-500 transition">Home</a></li>
+        <li><a href="#" class="hover:text-red-500 transition">Products</a></li>
+        <li><a href="{% url 'view_cart' %}" class="hover:text-red-500 transition">Cart</a></li>
+        <li><a href="#" class="hover:text-red-500 transition">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- CUSTOMER SUPPORT -->
+    <div>
+      <h3 class="text-white font-semibold mb-4 tracking-wide">
+        Support
+      </h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:text-red-500 transition">Help Center</a></li>
+        <li><a href="#" class="hover:text-red-500 transition">Returns</a></li>
+        <li><a href="#" class="hover:text-red-500 transition">Shipping</a></li>
+        <li><a href="#" class="hover:text-red-500 transition">Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <!-- CONTACT -->
+    <div>
+      <h3 class="text-white font-semibold mb-4 tracking-wide">
+        Contact
+      </h3>
+      <ul class="space-y-2 text-sm">
+        <li>📍 Kerala, India</li>
+        <li>📞 +91 9XXXXXXXXX</li>
+        <li>✉️ support@sparemart.com</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="border-t border-white/10 text-center py-4 text-sm text-gray-400">
+    © {{ now|date:"Y" }} <span class="text-white font-semibold">SpareMart</span>.
+    All rights reserved.
+  </div>
+
+</footer>
+
+
+    <script src="{% static 'js/toast.js' %}"></script>
+    {% include "includes/toast.html" %}
+    
+    <script>
+        function toggle() {
+            const menu = document.getElementById("menuBar")
+            menu.classList.toggle("hidden")
+        }
+    </script>
+
+</body>
+
+</html>
